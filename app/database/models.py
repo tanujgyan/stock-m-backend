@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from .database import Base
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -13,12 +14,40 @@ class User(Base):
     watchlists = relationship("Watchlist", back_populates="user")
     portfolios = relationship("Portfolio", back_populates="user")
 
+
 class Stock(Base):
     __tablename__ = "stocks"
 
     id = Column(Integer, primary_key=True, index=True)
-    symbol = Column(String, unique=True, index=True)
+    ticker = Column(String, unique=True, index=True)
     name = Column(String)
+    market = Column(String)
+    locale = Column(String)
+    primary_exchange = Column(String)
+    type = Column(String)
+    currency_name = Column(String)
+    cik = Column(String)
+    composite_figi = Column(String)
+    share_class_figi = Column(String)
+    last_updated_utc = Column(DateTime)
+
+    historical_data = relationship("HistoricalStockData", back_populates="stock")
+    news = relationship("News", back_populates="stock")
+
+
+class HistoricalStockData(Base):
+    __tablename__ = "historical_stock_data"
+    id = Column(Integer, primary_key=True, index=True)
+    stock_id = Column(Integer, ForeignKey("stocks.id"))
+    timestamp = Column(DateTime)
+    open = Column(Float)
+    high = Column(Float)
+    low = Column(Float)
+    close = Column(Float)
+    volume = Column(Integer)
+
+    stock = relationship("Stock", back_populates="historical_data")
+
 
 class Watchlist(Base):
     __tablename__ = "watchlists"
@@ -29,6 +58,7 @@ class Watchlist(Base):
 
     user = relationship("User", back_populates="watchlists")
     stock = relationship("Stock")
+
 
 class Portfolio(Base):
     __tablename__ = "portfolios"
@@ -42,6 +72,7 @@ class Portfolio(Base):
 
     user = relationship("User", back_populates="portfolios")
     stock = relationship("Stock")
+
 
 class News(Base):
     __tablename__ = "news"
