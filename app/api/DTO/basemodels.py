@@ -18,7 +18,8 @@ class StockData(BaseModel):
     cik: Optional[str]
     composite_figi: Optional[str]
     share_class_figi: Optional[str]
-    #last_updated_utc: datetime
+    last_updated_utc: datetime
+
 
 class HistoricalData(BaseModel):
     ticker: str
@@ -29,6 +30,7 @@ class HistoricalData(BaseModel):
     status: str
     request_id: str
     count: int
+
 
 class StockSearch(BaseModel):
     results: List[StockData]

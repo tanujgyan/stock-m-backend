@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
+
 from .database import Base
 
 
@@ -30,7 +31,7 @@ class Stock(Base):
     composite_figi = Column(String)
     share_class_figi = Column(String)
     last_updated_utc = Column(DateTime)
-
+    active = Column(Boolean)
     historical_data = relationship("HistoricalStockData", back_populates="stock")
     news = relationship("News", back_populates="stock")
 
