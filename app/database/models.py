@@ -32,22 +32,19 @@ class Stock(Base):
     share_class_figi = Column(String)
     last_updated_utc = Column(DateTime)
     active = Column(Boolean)
-    historical_data = relationship("HistoricalStockData", back_populates="stock")
     news = relationship("News", back_populates="stock")
 
 
 class HistoricalStockData(Base):
     __tablename__ = "historical_stock_data"
     id = Column(Integer, primary_key=True, index=True)
-    stock_id = Column(Integer, ForeignKey("stocks.id"))
+    symbol = Column(String)
     timestamp = Column(DateTime)
     open = Column(Float)
     high = Column(Float)
     low = Column(Float)
     close = Column(Float)
     volume = Column(Integer)
-
-    stock = relationship("Stock", back_populates="historical_data")
 
 
 class Watchlist(Base):
