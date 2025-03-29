@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional, List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 from app.api.DTO.marketenums import MarketEnum
 
@@ -37,3 +37,30 @@ class StockSearch(BaseModel):
     count: int
     status: str
     request_id: str
+
+
+class UserCreate(BaseModel):
+    username: str
+    password: str
+    email: Optional[EmailStr] = None
+
+
+class UserRead(BaseModel):
+    id: int
+    username: str
+    email: Optional[EmailStr] = None
+    is_active: bool
+
+    class Config:
+        orm_mode = True  # To allow creating from SQLAlchemy model
+
+
+# For returning JWT token upon login
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+# For holding token data (like user identifier) within the JWT payload
+class TokenData(BaseModel):
+    username: Optional[str] = None
