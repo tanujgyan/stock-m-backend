@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.api.endpoints import stocks, watchlist, portfolio, news
+from app.api.endpoints import stocks, watchlist, portfolio, news, auth
 from app.database import models, database
 
 models.Base.metadata.create_all(bind=database.engine)
@@ -11,7 +11,7 @@ app.include_router(stocks.router)
 app.include_router(watchlist.router)
 app.include_router(portfolio.router)
 app.include_router(news.router)
-
+app.include_router(auth.router, prefix="/auth", tags=["auth"])
 
 
 @app.get("/")

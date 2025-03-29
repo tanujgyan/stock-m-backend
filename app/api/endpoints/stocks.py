@@ -8,7 +8,7 @@ from fastapi.params import Depends
 from sqlalchemy.orm import Session
 
 from app.database import database, crud, models
-from ..DTO.basemodels import StockData, HistoricalData
+from ..DTO.schemas import StockData, HistoricalData
 
 load_dotenv()
 router = APIRouter()
