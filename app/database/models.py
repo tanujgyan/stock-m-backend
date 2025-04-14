@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, \
+    Float, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -33,6 +34,7 @@ class Stock(Base):
     last_updated_utc = Column(DateTime)
     active = Column(Boolean)
     news = relationship("News", back_populates="stock")
+    historical_data = relationship("HistoricalStockData", back_populates="stock")
 
 
 class HistoricalStockData(Base):
@@ -45,6 +47,7 @@ class HistoricalStockData(Base):
     low = Column(Float)
     close = Column(Float)
     volume = Column(Integer)
+    stock = relationship("Stock", back_populates="historical_data")
 
 
 class Watchlist(Base):

@@ -8,7 +8,8 @@ from fastapi.params import Depends
 from sqlalchemy.orm import Session
 
 from app.database import database, crud, models
-from ..DTO.schemas import StockData, HistoricalData
+from ..DTO.schemas import StockData, \
+    HistoricalData, StockSearch
 
 load_dotenv()
 router = APIRouter()
@@ -110,6 +111,7 @@ async def get_historical_data(
             historical_data = response.json()
             for result in historical_data["results"]:
                 timestamp = datetime.fromtimestamp(result["t"] / 1000)
+                #save missing data to the database
                 if (
                     not db.query(models.HistoricalStockData)
                     .filter(
@@ -134,7 +136,7 @@ async def get_historical_data(
             )
 
 
-@router.get("/stocks/search/{query}")
+@router.get("/stocks/search/{query}", response_model=StockSearch)
 async def search_stocks(query: str):
     url = f"{BASE_URL}/v3/reference/tickers?search={query}&apiKey={POLYGON_API_KEY}"
     response = requests.get(url)
