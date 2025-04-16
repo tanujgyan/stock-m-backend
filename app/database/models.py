@@ -1,5 +1,4 @@
-from sqlalchemy import Column, Integer, String, \
-    Float, ForeignKey, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -47,6 +46,7 @@ class HistoricalStockData(Base):
     low = Column(Float)
     close = Column(Float)
     volume = Column(Integer)
+    stock_id = Column(Integer, ForeignKey("stocks.id"))
     stock = relationship("Stock", back_populates="historical_data")
 
 
